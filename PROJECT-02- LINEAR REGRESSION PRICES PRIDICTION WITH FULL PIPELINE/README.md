@@ -110,50 +110,182 @@ Raw Data (ZIP/CSV)
 
 ---
 
-## Setup & Run
+## Getting Started
 
 ### Prerequisites
+- Python 3.8 or higher
+- pip package manager
+- Git
+
+### Step 1: Clone the Repository
 ```bash
-Python 3.8+
+git clone https://github.com/TSR0705/AI-ML-PROJECTS.git
+cd AI-ML-PROJECTS
 ```
 
-### Installation
+### Step 2: Navigate to Project Directory
 ```bash
-# Install dependencies
-pip install -r requirements.txt
+cd "PROJECT-02- LINEAR REGRESSION PRICES PRIDICTION WITH FULL PIPELINE"
+```
 
-# Initialize ZenML
+### Step 3: Create Virtual Environment (Recommended)
+```bash
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# On Windows:
+venv\Scripts\activate
+# On macOS/Linux:
+source venv/bin/activate
+```
+
+### Step 4: Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+**What gets installed:**
+- ZenML (pipeline orchestration)
+- MLflow (experiment tracking)
+- scikit-learn (ML models)
+- pandas, numpy (data processing)
+- matplotlib, seaborn (visualization)
+
+### Step 5: Initialize ZenML
+```bash
 zenml init
 ```
 
-### Run Training Pipeline
+This creates a `.zen` directory for ZenML configuration and artifact storage.
+
+### Step 6: Run Training Pipeline
 ```bash
 python run_pipeline.py
 ```
 
-### View Experiments
-```bash
-# Get MLflow tracking URI from pipeline output, then:
-mlflow ui --backend-store-uri <tracking_uri>
-# Open http://localhost:5000
+**What happens:**
+1. Data ingestion from `data/archive.zip`
+2. Missing values handling
+3. Feature engineering (log transformation)
+4. Outlier detection and removal
+5. Train/test split
+6. Model training (Linear Regression)
+7. Model evaluation (MSE, RMSE, R²)
+8. MLflow logs metrics and model
+
+**Expected output:**
+```
+Pipeline run started...
+Step: data_ingestion_step
+Step: handle_missing_values_step
+Step: feature_engineering_step
+...
+Pipeline run completed!
+
+Now run:
+    mlflow ui --backend-store-uri '<tracking_uri>'
+To inspect your experiment runs within the mlflow UI.
 ```
 
-### Deploy Model
+### Step 7: View Experiments in MLflow UI
+```bash
+# Copy the tracking URI from previous output, then:
+mlflow ui --backend-store-uri '<tracking_uri>'
+
+# Or simply:
+mlflow ui --backend-store-uri ./mlruns
+```
+
+Open browser at `http://localhost:5000` to view:
+- Experiment runs
+- Metrics (MSE, RMSE, R²)
+- Parameters
+- Model artifacts
+
+### Step 8: Deploy Model (Optional)
 ```bash
 python run_deployment.py
 ```
 
-### Test Inference
+This starts a continuous deployment pipeline that:
+1. Runs training pipeline
+2. Deploys model as REST API
+3. Serves at `http://127.0.0.1:8000/invocations`
+
+### Step 9: Test Inference (Optional)
 ```bash
-# Model serves at http://127.0.0.1:8000/invocations
+# In a new terminal (keep deployment running)
 python sample_predict.py
 ```
 
-### Common Issues
-- **Import errors**: Ensure you're in project root when running scripts
-- **ZenML not initialized**: Run `zenml init` first
-- **Port conflicts**: MLflow default port 5000 may conflict; use `--port` flag
-- **Model not found**: Run training pipeline before deployment
+**Expected output:**
+```
+Prediction: [175234.56]
+```
+
+---
+
+## Alternative: Run Native Pipeline (Without ZenML)
+```bash
+python run_native_pipeline.py
+```
+
+This runs the ML workflow without ZenML orchestration (useful for debugging).
+
+---
+
+## Troubleshooting
+
+### Issue: `ModuleNotFoundError: No module named 'zenml'`
+**Solution:** Activate virtual environment and reinstall dependencies
+```bash
+venv\Scripts\activate  # Windows
+pip install -r requirements.txt
+```
+
+### Issue: `zenml init` fails
+**Solution:** Ensure you're in the project directory
+```bash
+cd "PROJECT-02- LINEAR REGRESSION PRICES PRIDICTION WITH FULL PIPELINE"
+zenml init
+```
+
+### Issue: MLflow UI port 5000 already in use
+**Solution:** Use a different port
+```bash
+mlflow ui --backend-store-uri ./mlruns --port 5001
+```
+
+### Issue: Import errors when running pipeline
+**Solution:** Ensure you're running from project root
+```bash
+# Should be in: PROJECT-02- LINEAR REGRESSION PRICES PRIDICTION WITH FULL PIPELINE/
+python run_pipeline.py
+```
+
+### Issue: Model deployment fails
+**Solution:** Ensure training pipeline completed successfully first
+```bash
+# Run training first
+python run_pipeline.py
+# Then deploy
+python run_deployment.py
+```
+
+---
+
+## Project Workflow Summary
+
+```
+1. Clone repo → 2. Install deps → 3. Init ZenML → 4. Run training
+                                                        ↓
+                                                   View MLflow UI
+                                                        ↓
+                                            5. Deploy model (optional)
+                                                        ↓
+                                            6. Test predictions
+```
 
 ---
 

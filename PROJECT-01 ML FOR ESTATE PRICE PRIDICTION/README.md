@@ -33,33 +33,92 @@ The Boston Housing dataset contains 506 samples with 14 features:
 - `OUTPUT OF DIFF MODELS.txt` - Model comparison results
 - `TESTING.ipynb` - Model testing notebook
 
-## Installation
+## Getting Started
 
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/TSR0705/AI-ML-PROJECTS.git
+cd AI-ML-PROJECTS
+```
+
+### Step 2: Navigate to Project Directory
+```bash
+cd "PROJECT-01 ML FOR ESTATE PRICE PRIDICTION"
+```
+
+### Step 3: Install Dependencies
 ```bash
 pip install pandas numpy scikit-learn matplotlib jupyter joblib
 ```
 
-## Usage
-
-### Running the Standalone Script
+**Or use a virtual environment (recommended):**
 ```bash
-cd "PROJECT-01 ML FOR ESTATE PRICE PRIDICTION"
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# On Windows:
+venv\Scripts\activate
+# On macOS/Linux:
+source venv/bin/activate
+
+# Install dependencies
+pip install pandas numpy scikit-learn matplotlib jupyter joblib
+```
+
+### Step 4: Run the Project
+
+**Option A: Run Standalone Python Script (Recommended)**
+```bash
 python dragon_real_estate_predictor_clean.py
 ```
 
-### Running the Jupyter Notebook
+**Option B: Run Jupyter Notebook**
 ```bash
 jupyter notebook "Dragon real state.ipynb"
 ```
+Then open the notebook in your browser and run all cells.
 
-### Loading the Trained Model
+**Option C: Use Pre-trained Model**
 ```python
 from joblib import load
+import pandas as pd
+
+# Load the trained model
 model = load('Dragon.joblib')
 
-# Make predictions
-predictions = model.predict(your_data)
+# Prepare your data (must have same features as training data)
+# Example: Create a sample with all 14 features
+sample_data = pd.DataFrame({
+    'CRIM': [0.00632],
+    'ZN': [18.0],
+    'INDUS': [2.31],
+    'CHAS': [0],
+    'NOX': [0.538],
+    'RM': [6.575],
+    'AGE': [65.2],
+    'DIS': [4.0900],
+    'RAD': [1],
+    'TAX': [296],
+    'PTRATIO': [15.3],
+    'B': [396.90],
+    'LSTAT': [4.98],
+    'TAXRM': [45.02]  # Engineered feature: TAX/RM
+})
+
+# Make prediction
+prediction = model.predict(sample_data)
+print(f"Predicted Price: ${prediction[0] * 1000:.2f}")
 ```
+
+### Step 5: View Results
+The script will output:
+- Model training progress
+- Cross-validation scores
+- Test set RMSE
+- Model comparison results
+
+Check `OUTPUT OF DIFF MODELS.txt` for detailed model performance comparison.
 
 ## Model Performance
 
