@@ -116,9 +116,3 @@ AI-ML-PROJECTS/
 2. **Move to PROJECT-02** - Learn production MLOps with orchestration and deployment
 
 ---
-
-## Author
-[TSR0705](https://github.com/TSR0705)
-
-## License
-Open source - Educational and commercial use permitted
